@@ -2,13 +2,26 @@
 	import { query, setClient } from 'svelte-apollo';
 	import { client } from '../libs/apollo';
 	import { GetSnippets, GetSnippetsResponse } from '../query/snippets';
+	import { onMount } from 'svelte';
 	import Prism from 'prismjs';
 	import Snippet from '../components/Snippet/Snippet.svelte';
 	import 'prismjs/themes/prism-tomorrow.css';
+	import 'prismjs/components/prism-typescript';
 
 	setClient(client);
 
 	const snippets = query<GetSnippetsResponse>(GetSnippets);
+
+	let highlightInterval;
+	onMount(() => {
+		highlightInterval = setInterval(() => {
+			Prism.highlightAll();
+			if (!$snippets.loading && !$snippets.error) {
+				Prism.highlightAll();
+				clearInterval(highlightInterval);
+			}
+		}, 500);
+	});
 </script>
 
 {#if $snippets.loading}
