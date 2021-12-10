@@ -426,6 +426,11 @@ chokidar@^3.4.1:
   optionalDependencies:
     fsevents "~2.3.2"
 
+chota@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/chota/-/chota-0.8.0.tgz#46a2d87c9eea7e811017e5b410745b839a9f343a"
+  integrity sha512-6Y6MrULPNVup+9i+bFF5mXvifw4/N0AqcTO6VkhRcmRqY0XD2/EKq2kD8y7dX/PJnDq9ruHl2NURlPtGkMSNsg==
+
 color-convert@^1.9.0:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.3.tgz#bb71850690e1f136567de629d2d5471deda4c1e8"
@@ -1472,6 +1477,11 @@ svelte-check@^2.2.6:
     source-map "^0.7.3"
     svelte-preprocess "^4.0.0"
     typescript "*"
+
+svelte-chota@^1.8.6:
+  version "1.8.6"
+  resolved "https://registry.yarnpkg.com/svelte-chota/-/svelte-chota-1.8.6.tgz#b932b5d69869e736c0cde7a651d883aa12233ba9"
+  integrity sha512-lMqvDMcI2Ozyku7QKnn1nN4NuEZy6XF+qMQssLADWX63u78xN8jidQ8QuJpPrSA6JXnC3n4Qu6uRBDS83ZHY8A==
 
 svelte-hmr@^0.14.7:
   version "0.14.7"
