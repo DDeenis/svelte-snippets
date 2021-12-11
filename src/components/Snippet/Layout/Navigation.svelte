@@ -76,11 +76,19 @@
 	.nav-list li a {
 		color: #fefcbf;
 		text-transform: capitalize;
+		text-decoration: none;
+	}
+
+	.nav-list li a:hover {
+		text-decoration: underline;
 	}
 
 	.auth-btn {
 		color: #fefcbf;
-		text-decoration: underline;
 		cursor: pointer;
+	}
+
+	.auth-btn:hover {
+		text-decoration: underline;
 	}
 </style>
