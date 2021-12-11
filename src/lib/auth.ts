@@ -1,4 +1,4 @@
-import createAuth0Client, { Auth0Client } from '@auth0/auth0-spa-js';
+import createAuth0Client, { Auth0Client, Auth0ClientOptions } from '@auth0/auth0-spa-js';
 import { writable } from 'svelte/store';
 import secrets from './secrets';
 
@@ -16,7 +16,7 @@ async function createClient(): Promise<Auth0Client> {
 	return auth0Client;
 }
 
-async function loginWithPopup(client, options): Promise<void> {
+async function loginWithPopup(client: Auth0Client, options?: Auth0ClientOptions): Promise<void> {
 	popupOpen.set(true);
 	try {
 		await client.loginWithPopup(options);
