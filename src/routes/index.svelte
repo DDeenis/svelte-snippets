@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { query, setClient } from 'svelte-apollo';
-	import { client } from '../libs/apollo';
+	import { client } from '$lib/apollo';
 	import { GetSnippets, GetSnippetsResponse } from '../query/snippets';
 	import { onMount } from 'svelte';
 	import Prism from 'prismjs';
@@ -43,18 +43,12 @@
 		grid-template-columns: repeat(2, 530px);
 		place-content: center;
 		gap: 1.5rem;
-		padding: 5rem 1rem;
+		padding: 5rem 0;
 	}
 
 	@media (max-width: 1200px) {
 		.snippets-list {
 			grid-template-columns: 1fr;
 		}
-	}
-
-	:global(body) {
-		margin: 0;
-		padding: 0;
-		background-color: #c53030;
 	}
 </style>
