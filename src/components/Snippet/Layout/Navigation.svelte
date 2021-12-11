@@ -1,5 +1,22 @@
 <nav>
 	<h1 class="title">Snippets</h1>
+	<ul class="nav-list">
+		<li>
+			<a href="/">All Snippets</a>
+		</li>
+		<li>
+			<a href="/snippets/personal">My Snippets</a>
+		</li>
+		<li>
+			<a href="/snippets/create">Add Snippet</a>
+		</li>
+		<li>
+			<a href="/profile">My Profile</a>
+		</li>
+		<li>
+			<a href="/addauth0!!!">Login</a>
+		</li>
+	</ul>
 </nav>
 
 <style>
@@ -15,5 +32,23 @@
 		color: #fff;
 		font-size: 2.5rem;
 		font-weight: 500;
+	}
+
+	.nav-list {
+		list-style: none;
+		margin: 0 auto;
+		padding: 5px 10px;
+		/* width: max-content; */
+		max-width: 500px;
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 15px;
+	}
+
+	.nav-list li a {
+		color: #fefcbf;
+		text-transform: capitalize;
 	}
 </style>

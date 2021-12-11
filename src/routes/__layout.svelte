@@ -1,5 +1,6 @@
 <script>
 	import Navigation from '../components/Snippet/Layout/Navigation.svelte';
+	import { Auth0Context } from '@dopry/svelte-auth0';
 </script>
 
 <div class="wrapper">
