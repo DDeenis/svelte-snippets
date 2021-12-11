@@ -47,7 +47,7 @@
 		grid-template-columns: repeat(2, 530px);
 		place-content: center;
 		gap: 1.5rem;
-		padding: 5rem 0;
+		padding: 2.5rem 0;
 	}
 
 	@media (max-width: 1200px) {

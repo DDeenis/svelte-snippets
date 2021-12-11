@@ -2,23 +2,42 @@
 	export let isAuthenticated;
 	export let login;
 	export let logout;
+
+	import { page } from '$app/stores';
+	import { routes } from '$lib/routes';
+
+	const linkActive = 'color: #ECC94B;';
+	const linkStyles: Record<string, string> = {};
+
+	$: {
+		for (const pathName in routes) {
+			const path = routes[pathName];
+			linkStyles[path] = path === $page.path ? linkActive : '';
+		}
+	}
 </script>
 
 <nav>
 	<h1 class="title">Snippets</h1>
 	<ul class="nav-list">
 		<li>
-			<a href="/">All Snippets</a>
+			<a style={linkStyles[routes.allSnippets]} href="/">All Snippets</a>
 		</li>
-		<li>
-			<a href="/snippets/personal">My Snippets</a>
-		</li>
-		<li>
-			<a href="/snippets/create">Add Snippet</a>
-		</li>
-		<li>
-			<a href="/profile">My Profile</a>
-		</li>
+		{#if $isAuthenticated}
+			<li>
+				<a style={linkStyles[routes.mySnippets]} href="/snippets/personal">My Snippets</a>
+			</li>
+		{/if}
+		{#if $isAuthenticated}
+			<li>
+				<a style={linkStyles[routes.createSnippet]} href="/snippets/create">Add Snippet</a>
+			</li>
+		{/if}
+		{#if $isAuthenticated}
+			<li>
+				<a style={linkStyles[routes.profile]} href="/profile">My Profile</a>
+			</li>
+		{/if}
 		<li>
 			<span class="auth-btn" on:click={$isAuthenticated ? logout : login}>
 				{$isAuthenticated ? 'Logout' : 'Login'}
