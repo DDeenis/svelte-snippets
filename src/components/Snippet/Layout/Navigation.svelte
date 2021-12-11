@@ -20,9 +20,9 @@
 			<a href="/profile">My Profile</a>
 		</li>
 		<li>
-			<span class="auth-btn" on:click={$isAuthenticated ? logout : login}
-				>{$isAuthenticated ? 'Logout' : 'Login'}</span
-			>
+			<span class="auth-btn" on:click={$isAuthenticated ? logout : login}>
+				{$isAuthenticated ? 'Logout' : 'Login'}
+			</span>
 		</li>
 	</ul>
 </nav>

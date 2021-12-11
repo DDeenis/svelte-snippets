@@ -1,4 +1,5 @@
-import createAuth0Client, { Auth0Client, Auth0ClientOptions } from '@auth0/auth0-spa-js';
+import createAuth0Client from '@auth0/auth0-spa-js';
+import type { Auth0Client, Auth0ClientOptions } from '@auth0/auth0-spa-js';
 import { writable } from 'svelte/store';
 import secrets from './secrets';
 
