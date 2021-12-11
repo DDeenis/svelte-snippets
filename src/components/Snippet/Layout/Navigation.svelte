@@ -1,3 +1,9 @@
+<script lang="ts">
+	export let isAuthenticated;
+	export let login;
+	export let logout;
+</script>
+
 <nav>
 	<h1 class="title">Snippets</h1>
 	<ul class="nav-list">
@@ -14,7 +20,9 @@
 			<a href="/profile">My Profile</a>
 		</li>
 		<li>
-			<a href="/addauth0!!!">Login</a>
+			<span class="auth-btn" on:click={$isAuthenticated ? logout : login}
+				>{$isAuthenticated ? 'Logout' : 'Login'}</span
+			>
 		</li>
 	</ul>
 </nav>
@@ -38,7 +46,6 @@
 		list-style: none;
 		margin: 0 auto;
 		padding: 5px 10px;
-		/* width: max-content; */
 		max-width: 500px;
 		display: flex;
 		justify-content: space-around;
@@ -50,5 +57,11 @@
 	.nav-list li a {
 		color: #fefcbf;
 		text-transform: capitalize;
+	}
+
+	.auth-btn {
+		color: #fefcbf;
+		text-decoration: underline;
+		cursor: pointer;
 	}
 </style>

@@ -1,16 +1,29 @@
 <script>
+	import { auth, isAuthenticated, user } from '$lib/auth';
+	import { onMount } from 'svelte';
 	import Navigation from '../components/Snippet/Layout/Navigation.svelte';
-	import { Auth0Context } from '@dopry/svelte-auth0';
+
+	let auth0Client;
+	onMount(async () => {
+		auth0Client = await auth.createClient();
+
+		isAuthenticated.set(await auth0Client.isAuthenticated());
+		user.set(await auth0Client.getUser());
+	});
+
+	function login() {
+		auth.loginWithPopup(auth0Client);
+	}
+
+	function logout() {
+		auth.logout(auth0Client);
+	}
 </script>
 
 <div class="wrapper">
-	<Navigation />
+	<Navigation {isAuthenticated} {login} {logout} />
 	<slot />
 </div>
-
-<svelte:head>
-	<title>Snippets app</title>
-</svelte:head>
 
 <style>
 	:global(body) {

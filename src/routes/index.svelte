@@ -24,6 +24,10 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Snippets app</title>
+</svelte:head>
+
 {#if $snippets.loading}
 	Loading...
 {:else if $snippets.error}
