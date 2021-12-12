@@ -41,8 +41,6 @@ export const usePagedSnippets = (options?: PagedSnippetsOptions): PagedSnippetsR
 			.then((response) => {
 				const chunk = response.data.querySnippet;
 
-				console.log(chunk);
-
 				if (chunk?.length < first) {
 					hasMore.set(false);
 				}

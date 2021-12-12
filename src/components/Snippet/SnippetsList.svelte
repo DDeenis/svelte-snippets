@@ -1,21 +1,29 @@
 <script lang="ts">
-	import InfiniteScroll from 'svelte-infinite-scroll';
 	import type { ReadableQuery } from 'svelte-apollo';
-	import Snippet from './Snippet.svelte';
 	import type { GetSnippetsResponse } from '../../query/snippets';
+	import type { Snippet as SnippetType } from '../../query/snippets';
+	import InfiniteScroll from 'svelte-infinite-scroll';
+	import Snippet from './Snippet.svelte';
 
 	export let snippets: ReadableQuery<GetSnippetsResponse>;
 	export let fetchMore: () => void;
 	export let hasMore: boolean;
+	export let filterFn: (snippets?: SnippetType[]) => SnippetType[] | undefined = undefined;
+
+	let snippetsData: SnippetType[] | undefined;
+
+	$: {
+		snippetsData = filterFn ? filterFn($snippets.data?.querySnippet) : $snippets.data?.querySnippet;
+	}
 </script>
 
 {#if $snippets.loading}
 	Loading...
 {:else if $snippets.error}
 	Error: {$snippets.error}
-{:else if $snippets.data?.querySnippet}
+{:else if snippetsData}
 	<div class="snippets-list">
-		{#each $snippets.data?.querySnippet as snippet}
+		{#each snippetsData as snippet}
 			<Snippet {snippet} />
 		{/each}
 		<InfiniteScroll

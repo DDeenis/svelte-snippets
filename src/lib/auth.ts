@@ -1,12 +1,12 @@
 import createAuth0Client from '@auth0/auth0-spa-js';
-import type { Auth0Client, Auth0ClientOptions } from '@auth0/auth0-spa-js';
+import type { Auth0Client, Auth0ClientOptions, User } from '@auth0/auth0-spa-js';
 import { writable } from 'svelte/store';
 import secrets from './secrets';
 
-export const isAuthenticated = writable(false);
-export const popupOpen = writable(false);
-export const user = writable({});
-export const error = writable();
+export const isAuthenticated = writable<boolean>(false);
+export const popupOpen = writable<boolean>(false);
+export const user = writable<User>({});
+export const error = writable<string>();
 
 async function createClient(): Promise<Auth0Client> {
 	const auth0Client = await createAuth0Client({
