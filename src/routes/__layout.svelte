@@ -1,7 +1,11 @@
 <script>
-	import { auth, isAuthenticated, user } from '$lib/auth';
 	import { onMount } from 'svelte';
+	import { setClient } from 'svelte-apollo';
+	import { auth, isAuthenticated, user } from '$lib/auth';
+	import { client } from '$lib/apollo';
 	import Navigation from '../components/Layout/Navigation.svelte';
+
+	setClient(client);
 
 	let auth0Client;
 	onMount(async () => {

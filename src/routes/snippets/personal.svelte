@@ -4,10 +4,7 @@
 	import SnippetsList from '../../components/Snippet/SnippetsList.svelte';
 	import Prism from 'prismjs';
 	import { user } from '$lib/auth';
-	import { setClient } from 'svelte-apollo';
-	import { client } from '$lib/apollo';
 
-	setClient(client);
 	const { snippets, fetchMore, hasMore } = usePagedSnippets();
 
 	let highlightInterval;
