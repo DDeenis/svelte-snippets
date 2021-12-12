@@ -1,8 +1,6 @@
 import { ApolloClient, from, HttpLink, InMemoryCache } from '@apollo/client/core';
 import { onError } from '@apollo/client/link/error';
-// import { config } from 'dotenv';
-
-// config();
+import { offsetLimitPagination } from '@apollo/client/utilities';
 
 const httpLink = new HttpLink({
 	uri: 'https://nameless-brook-310053.eu-central-1.aws.cloud.dgraph.io/graphql',
@@ -24,5 +22,16 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 export const client = new ApolloClient({
 	ssrMode: typeof window === 'undefined',
 	link: from([errorLink, httpLink]),
-	cache: new InMemoryCache(),
+	cache: new InMemoryCache({
+		typePolicies: {
+			Snippets: {
+				merge: true,
+			},
+			Query: {
+				fields: {
+					querySnippet: offsetLimitPagination(),
+				},
+			},
+		},
+	}),
 });

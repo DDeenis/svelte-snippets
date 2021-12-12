@@ -1,7 +1,7 @@
 <script>
 	import { auth, isAuthenticated, user } from '$lib/auth';
 	import { onMount } from 'svelte';
-	import Navigation from '../components/Snippet/Layout/Navigation.svelte';
+	import Navigation from '../components/Layout/Navigation.svelte';
 
 	let auth0Client;
 	onMount(async () => {
