@@ -6,9 +6,10 @@
 	import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
 	import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
 	import { onMount } from 'svelte';
+	import type { Writable } from 'svelte/store';
 
 	export let language: string;
-	export let value: string;
+	export let value: Writable<string>;
 
 	let divEl: HTMLDivElement = null;
 	let editor: monaco.editor.IStandaloneCodeEditor;
@@ -53,7 +54,7 @@
 	}
 </script>
 
-<div bind:this={divEl} class="code-editor" on:change={() => (value = editor.getValue())} />
+<div bind:this={divEl} class="code-editor" on:change={() => value.set(editor.getValue())} />
 
 <style>
 	.code-editor {

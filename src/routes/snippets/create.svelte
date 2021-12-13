@@ -1,29 +1,49 @@
 <script lang="ts">
+	import { languages } from '$lib/helpers/language';
+	import { mdiCheckBold } from '@mdi/js';
 	import { writable } from 'svelte/store';
-
+	import Button from '../../components/Common/Button.svelte';
+	import ButtonsGroup from '../../components/Common/ButtonsGroup.svelte';
 	import MonacoEditor from '../../components/Monaco/MonacoEditor.svelte';
 
 	let name: string;
-	let language = writable<string>('javascript');
-	let code: string;
+	let language = writable<string>('JavaScript');
+	let code = writable<string>('');
+
+	const langs = languages();
+
+	const handleSubmit = () => {
+		// TODO: create snippet
+		console.log({ name, language: $language, code: $code });
+	};
 </script>
 
-<form class="wrapper" on:submit|preventDefault={() => {}}>
+<form class="wrapper" on:submit|preventDefault={handleSubmit}>
 	<input class="input" type="text" placeholder="Name" bind:value={name} />
-	<input class="input" type="text" placeholder="Language" bind:value={$language} />
-	<MonacoEditor language={$language} value={code} />
+	{#if $langs.data?.queryLanguage}
+		<select class="input" bind:value={$language}>
+			{#each $langs.data.queryLanguage as lang}
+				<option value={lang.name}>{lang.name}</option>
+			{/each}
+		</select>
+	{/if}
+	<MonacoEditor language={$language.toLowerCase()} value={code} />
+	<ButtonsGroup>
+		<Button label="Submit" type="submit" icon={mdiCheckBold} />
+	</ButtonsGroup>
 </form>
 
 <style>
 	.wrapper {
 		min-height: 60vh;
-		max-width: 700px;
+		max-width: 800px;
 		margin: 0 auto;
 		display: flex;
 		flex-direction: column;
 		gap: 0.75rem;
 		margin-top: 2rem;
 		padding: min(1.75rem, 3vw) min(2.5rem, 4vw);
+		box-sizing: border-box;
 		border-radius: 0.75rem;
 		background-color: #f6e05e;
 	}
@@ -47,5 +67,9 @@
 
 	.input::placeholder {
 		color: rgba(0, 0, 0, 0.5);
+	}
+
+	.input option {
+		background-color: #ecc94b;
 	}
 </style>

@@ -20,7 +20,7 @@ const defaultFirst = 10;
 const defaultOffset = 0;
 const hasMore = writable(true);
 
-export const usePagedSnippets = (options?: PagedSnippetsOptions): PagedSnippetsResponse => {
+export const pagedSnippets = (options?: PagedSnippetsOptions): PagedSnippetsResponse => {
 	const first = options?.first ?? defaultFirst;
 	const offset = options?.offset ?? defaultOffset;
 	const snippets = query<GetSnippetsResponse>(GetSnippets, {

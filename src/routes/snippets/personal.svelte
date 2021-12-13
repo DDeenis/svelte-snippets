@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { usePagedSnippets } from '$lib/helpers/snippets';
+	import { pagedSnippets } from '$lib/helpers/snippets';
 	import SnippetsList from '../../components/Snippet/SnippetsList.svelte';
 	import Prism from 'prismjs';
 	import { user } from '$lib/auth';
 
-	const { snippets, fetchMore, hasMore } = usePagedSnippets();
+	const { snippets, fetchMore, hasMore } = pagedSnippets();
 
 	let highlightInterval;
 	onMount(() => {
