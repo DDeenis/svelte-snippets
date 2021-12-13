@@ -57,7 +57,9 @@
 
 <style>
 	.code-editor {
-		min-height: 40vh;
 		width: 100%;
+		height: 100%;
+		min-height: 50vh;
+		max-height: 60vh;
 	}
 </style>

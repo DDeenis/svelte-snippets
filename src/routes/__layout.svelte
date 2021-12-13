@@ -33,13 +33,13 @@
 	:global(body) {
 		margin: 0;
 		padding: 0;
+		background-color: #c53030;
 	}
 
 	.wrapper {
 		box-sizing: border-box;
 		width: 100%;
 		height: 100%;
-		background-color: #c53030;
 		padding: 2rem 1rem;
 	}
 </style>
