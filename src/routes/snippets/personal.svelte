@@ -1,22 +1,18 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { pagedSnippets } from '$lib/helpers/snippets';
+	import { pagedSnippets, syntaxHighlight } from '$lib/helpers/snippets';
 	import SnippetsList from '../../components/Snippet/SnippetsList.svelte';
-	import Prism from 'prismjs';
 	import { user } from '$lib/auth';
 
 	const { snippets, fetchMore, hasMore } = pagedSnippets();
+	const highlight = syntaxHighlight();
 
-	let highlightInterval;
-	onMount(() => {
-		highlightInterval = setInterval(() => {
-			Prism.highlightAll();
-			if (!$snippets.loading && !$snippets.error) {
-				Prism.highlightAll();
-				clearInterval(highlightInterval);
-			}
-		}, 500);
-	});
+	const getCondition = () => !$snippets.loading && !$snippets.error;
+	const handleFetchMore = (offset: number) => {
+		highlight(getCondition);
+		return fetchMore(offset);
+	};
+	onMount(() => highlight(getCondition));
 </script>
 
 <svelte:head>
@@ -26,6 +22,6 @@
 <SnippetsList
 	{snippets}
 	filterFn={(snippets) => snippets?.filter((s) => s.User.userId == $user.sub)}
-	fetchMore={fetchMore($snippets.data?.querySnippet?.length)}
+	fetchMore={handleFetchMore($snippets.data?.querySnippet?.length)}
 	hasMore={$hasMore}
 />

@@ -4,6 +4,7 @@
 	import { auth, isAuthenticated, user } from '$lib/auth';
 	import { client } from '$lib/apollo';
 	import Navigation from '../components/Layout/Navigation.svelte';
+	import 'prismjs/themes/prism-tomorrow.css';
 
 	setClient(client);
 

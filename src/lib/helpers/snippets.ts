@@ -1,9 +1,15 @@
-import { GetSnippets } from '../../query/snippets';
-import type { GetSnippetsResponse } from '../../query/snippets';
-import { query } from 'svelte-apollo';
-import type { ReadableQuery } from 'svelte-apollo';
+import { CreateSnippet, GetSnippets } from '../../query/snippets';
+import { mutation, query } from 'svelte-apollo';
 import { writable } from 'svelte/store';
+import type {
+	GetSnippetsResponse,
+	CreateSnippetRequest,
+	CreateSnippetResponse,
+} from '../../query/snippets';
+import type { ReadableQuery } from 'svelte-apollo';
 import type { Writable } from 'svelte/store';
+import type { GQLAddSnippetInput } from 'src/graphql.schema';
+import Prism from 'prismjs';
 
 interface PagedSnippetsOptions {
 	first?: number;
@@ -51,5 +57,32 @@ export const pagedSnippets = (options?: PagedSnippetsOptions): PagedSnippetsResp
 		snippets,
 		hasMore,
 		fetchMore,
+	};
+};
+
+export const createSnippet = () => {
+	const create = mutation<CreateSnippetResponse, CreateSnippetRequest>(CreateSnippet);
+
+	return async (snippet: GQLAddSnippetInput) => {
+		const createdSnippet = await create({
+			variables: {
+				input: [snippet],
+			},
+		});
+
+		return createdSnippet;
+	};
+};
+
+export const syntaxHighlight = () => {
+	let highlightInterval;
+
+	return (condition: () => boolean) => {
+		highlightInterval = setInterval(() => {
+			if (condition()) {
+				Prism.highlightAll();
+				clearInterval(highlightInterval);
+			}
+		}, 500);
 	};
 };

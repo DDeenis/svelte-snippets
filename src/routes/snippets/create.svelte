@@ -1,21 +1,45 @@
 <script lang="ts">
 	import { languages } from '$lib/helpers/language';
+	import { createSnippet } from '$lib/helpers/snippets';
+	import { createUser, currentUser } from '$lib/helpers/user';
+	import { goto } from '$app/navigation';
 	import { mdiCheckBold } from '@mdi/js';
 	import { writable } from 'svelte/store';
 	import Button from '../../components/Common/Button.svelte';
 	import ButtonsGroup from '../../components/Common/ButtonsGroup.svelte';
 	import MonacoEditor from '../../components/Monaco/MonacoEditor.svelte';
+	import { onMount } from 'svelte';
+	import { user } from '$lib/auth';
 
 	let name: string;
 	let language = writable<string>('JavaScript');
 	let code = writable<string>('');
 
 	const langs = languages();
+	const curUser = currentUser();
+	const create = createSnippet();
+	const tryCreateUser = createUser();
 
 	const handleSubmit = () => {
-		// TODO: create snippet
-		console.log({ name, language: $language, code: $code });
+		create({
+			Language: {
+				id: $langs.data.queryLanguage.find((l) => l.name === $language).id,
+			},
+			User: {
+				id: $curUser.data.getUser.id,
+			},
+			name,
+			code: $code,
+		}).then(() => goto('/'));
 	};
+
+	onMount(() =>
+		tryCreateUser({
+			firstName: $user.name,
+			lastName: $user.nickname,
+			userId: $user.sub,
+		}),
+	);
 </script>
 
 <form class="wrapper" on:submit|preventDefault={handleSubmit}>
