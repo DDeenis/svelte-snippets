@@ -10,10 +10,13 @@
 	import MonacoEditor from '../../components/Monaco/MonacoEditor.svelte';
 	import { onMount } from 'svelte';
 	import { user } from '$lib/auth';
+	import { snippetSchema } from '$lib/schema/snippets';
+	import type { ValidationError } from 'yup';
 
 	let name: string;
 	let language = writable<string>('JavaScript');
 	let code = writable<string>('');
+	let formError = writable<string>('');
 
 	const langs = languages();
 	const curUser = currentUser();
@@ -21,7 +24,7 @@
 	const tryCreateUser = createUser();
 
 	const handleSubmit = () => {
-		create({
+		const snippetObj = {
 			Language: {
 				id: $langs.data.queryLanguage.find((l) => l.name === $language).id,
 			},
@@ -30,8 +33,24 @@
 			},
 			name,
 			code: $code,
-		}).then(() => goto('/'));
+		};
+
+		const formData = {
+			name,
+			language: $language,
+			code: $code,
+		};
+		console.log(snippetObj);
+
+		try {
+			snippetSchema.validateSync(formData);
+			create(snippetObj).then(() => goto('/'));
+		} catch (error) {
+			formError.set(error.message);
+		}
 	};
+
+	$: console.log($formError);
 
 	onMount(() =>
 		tryCreateUser({
@@ -52,6 +71,7 @@
 		</select>
 	{/if}
 	<MonacoEditor language={$language.toLowerCase()} value={code} />
+	<span>{$formError}</span>
 	<ButtonsGroup>
 		<Button label="Submit" type="submit" icon={mdiCheckBold} />
 	</ButtonsGroup>
