@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Accordion, AccordionItem } from 'svelte-accessible-accordion';
+	import { fly, fade } from 'svelte/transition';
 	import type { Snippet } from '../../query/snippets';
 
 	export let snippet: Snippet;
@@ -7,7 +8,7 @@
 	const prismLangClassName = `language-${snippet.Language.name.toLowerCase()}`;
 </script>
 
-<div class="snippet-wrapper">
+<div in:fade out:fade class="snippet-wrapper">
 	<div class="space-between">
 		<span class="snippet__info-text">{snippet.Language.name}</span>
 		<a class="snippet__info-text" href="/user/{snippet.User.id}"

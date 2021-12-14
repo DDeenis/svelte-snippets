@@ -11,7 +11,6 @@
 	import { onMount } from 'svelte';
 	import { user } from '$lib/auth';
 	import { snippetSchema } from '$lib/schema/snippets';
-	import type { ValidationError } from 'yup';
 
 	let name: string;
 	let language = writable<string>('JavaScript');
@@ -40,25 +39,25 @@
 			language: $language,
 			code: $code,
 		};
-		console.log(snippetObj);
 
 		try {
 			snippetSchema.validateSync(formData);
 			create(snippetObj).then(() => goto('/'));
 		} catch (error) {
-			formError.set(error.message);
+			const errorMessage = error.message[0].toUpperCase() + error.message.substring(1);
+			formError.set(errorMessage);
 		}
 	};
 
-	$: console.log($formError);
-
-	onMount(() =>
-		tryCreateUser({
-			firstName: $user.name,
-			lastName: $user.nickname,
-			userId: $user.sub,
-		}),
-	);
+	onMount(() => {
+		if (!$curUser) {
+			tryCreateUser({
+				firstName: $user.name,
+				lastName: $user.nickname,
+				userId: $user.sub,
+			});
+		}
+	});
 </script>
 
 <form class="wrapper" on:submit|preventDefault={handleSubmit}>
@@ -71,7 +70,7 @@
 		</select>
 	{/if}
 	<MonacoEditor language={$language.toLowerCase()} value={code} />
-	<span>{$formError}</span>
+	<span class="error-message">{$formError}</span>
 	<ButtonsGroup>
 		<Button label="Submit" type="submit" icon={mdiCheckBold} />
 	</ButtonsGroup>
@@ -115,5 +114,12 @@
 
 	.input option {
 		background-color: #ecc94b;
+	}
+
+	.error-message {
+		font-size: 1rem;
+		color: #e53e3e;
+		font-weight: 600;
+		font-family: Arial, Helvetica, sans-serif;
 	}
 </style>
