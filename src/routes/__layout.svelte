@@ -37,6 +37,31 @@
 		background-color: #c53030;
 	}
 
+	:global(html) {
+		--box-shadow-sm: 2px 2px 8px rgba(0, 0, 0, 0.3);
+		--box-shadow-md: 2px 2px 10px rgba(0, 0, 0, 0.4);
+	}
+
+	:global(.snippet-head-info) {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+	}
+
+	:global(.snippet__info-text) {
+		font-family: Arial, Helvetica, sans-serif;
+		box-sizing: border-box;
+		font-size: 1rem;
+		background-color: #ecc94b;
+		padding: 5px 10px;
+		border-radius: 1.75rem;
+		color: #000;
+		text-decoration: none;
+	}
+
 	.wrapper {
 		box-sizing: border-box;
 		width: 100%;

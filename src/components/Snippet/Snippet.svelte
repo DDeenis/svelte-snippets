@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Accordion, AccordionItem } from 'svelte-accessible-accordion';
-	import { fly, fade } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 	import type { Snippet } from '../../query/snippets';
 
 	export let snippet: Snippet;
@@ -8,8 +8,8 @@
 	const prismLangClassName = `language-${snippet.Language.name.toLowerCase()}`;
 </script>
 
-<div in:fade out:fade class="snippet-wrapper">
-	<div class="space-between">
+<div transition:fade class="snippet-wrapper">
+	<div class="snippet-head-info">
 		<span class="snippet__info-text">{snippet.Language.name}</span>
 		<a class="snippet__info-text" href="/user/{snippet.User.id}"
 			>{`${snippet.User.firstName} ${snippet.User.lastName ?? ''}`}</a
@@ -44,24 +44,7 @@
 		background-color: #f6e05e;
 		border-radius: 0.75rem;
 		font-family: Arial, Helvetica, sans-serif;
-	}
-
-	.space-between {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 10px;
-		justify-content: space-between;
-		align-items: center;
-		width: 100%;
-	}
-
-	.snippet__info-text {
-		box-sizing: border-box;
-		font-size: 1rem;
-		background-color: #ecc94b;
-		padding: 5px 10px;
-		border-radius: 1.75rem;
-		color: #000;
+		box-shadow: var(--box-shadow-sm);
 	}
 
 	.snippet-title {

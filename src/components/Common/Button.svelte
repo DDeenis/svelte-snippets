@@ -2,9 +2,10 @@
 	export let label: string;
 	export let icon: string;
 	export let type: 'button' | 'submit' | 'reset' = 'button';
+	export let click: () => void = () => {};
 </script>
 
-<button {type}>
+<button {type} on:click={click}>
 	<svg width="24" height="24">
 		<path d={icon} />
 	</svg>

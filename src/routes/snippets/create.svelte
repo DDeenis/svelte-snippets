@@ -89,6 +89,7 @@
 		box-sizing: border-box;
 		border-radius: 0.75rem;
 		background-color: #f6e05e;
+		box-shadow: var(--box-shadow-md);
 	}
 
 	.input {
