@@ -51,17 +51,6 @@
 		width: 100%;
 	}
 
-	:global(.snippet__info-text) {
-		font-family: Arial, Helvetica, sans-serif;
-		box-sizing: border-box;
-		font-size: 1rem;
-		background-color: #ecc94b;
-		padding: 5px 10px;
-		border-radius: 1.75rem;
-		color: #000;
-		text-decoration: none;
-	}
-
 	.wrapper {
 		box-sizing: border-box;
 		width: 100%;

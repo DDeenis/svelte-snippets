@@ -3,10 +3,12 @@
 	import { GetSnippet } from '../../query/snippets';
 	import { query } from 'svelte-apollo';
 	import { page } from '$app/stores';
-	import ButtonsGroup from '../../components/Common/ButtonsGroup.svelte';
 	import Button from '../../components/Common/Button.svelte';
 	import { mdiArrowLeft } from '@mdi/js';
 	import { goto } from '$app/navigation';
+	import type { Snippet } from '../../query/snippets';
+	import { onMount } from 'svelte';
+	import { syntaxHighlight } from '$lib/helpers/snippets';
 
 	const { id } = $page.params;
 	const snippetQuery = query<GetSnippetResponse, GetSnippetRequest>(GetSnippet, {
@@ -14,9 +16,17 @@
 			id,
 		},
 	});
-	let snippet;
+
+	let snippet: Snippet | undefined;
+	let prismLangClassName: string;
+	const highlight = syntaxHighlight();
+	const getCondition = () => !$snippetQuery.loading && !$snippetQuery.error;
+
+	onMount(() => highlight(getCondition));
 
 	$: snippet = $snippetQuery.data?.getSnippet;
+	$: prismLangClassName = `language-${snippet?.Language?.name?.toLowerCase()}`;
+	$: console.log(prismLangClassName);
 </script>
 
 <div class="wrapper">
@@ -26,9 +36,17 @@
 			{`${snippet?.User?.firstName} ${snippet?.User?.lastName ?? ''}`}
 		</a>
 	</div>
-	<ButtonsGroup>
+	<div class="snippet__title-block">
+		<h1>{snippet?.name}</h1>
+	</div>
+	<section class="code-section">
+		<pre style="margin: 0" class={prismLangClassName}>
+			<code>{snippet?.code}</code>
+		</pre>
+	</section>
+	<div class="btn-bottom">
 		<Button label="Back" icon={mdiArrowLeft} on:click={() => goto('/')} />
-	</ButtonsGroup>
+	</div>
 </div>
 
 <style>
@@ -45,5 +63,38 @@
 		border-radius: 0.75rem;
 		background-color: #f6e05e;
 		box-shadow: var(--box-shadow-md);
+	}
+
+	.btn-bottom {
+		justify-self: flex-end;
+		align-self: flex-end;
+	}
+
+	.snippet__info-text {
+		font-family: Arial, Helvetica, sans-serif;
+		box-sizing: border-box;
+		font-size: 1rem;
+		background-color: #ecc94b;
+		padding: 10px;
+		border-radius: 0.45rem;
+		color: #000;
+		text-decoration: none;
+	}
+
+	.snippet__title-block {
+		width: 100%;
+		box-sizing: border-box;
+		padding: 1rem;
+		background-color: #234e52;
+		text-align: center;
+		border-radius: 0.75rem;
+	}
+
+	.snippet__title-block h1 {
+		font-size: 1.5rem;
+		font-weight: 500;
+		font-family: Arial, Helvetica, sans-serif;
+		color: #fff;
+		margin: 0;
 	}
 </style>
