@@ -27,7 +27,7 @@
 		</a>
 	</div>
 	<ButtonsGroup>
-		<Button label="Back" icon={mdiArrowLeft} click={() => goto('/')} />
+		<Button label="Back" icon={mdiArrowLeft} on:click={() => goto('/')} />
 	</ButtonsGroup>
 </div>
 

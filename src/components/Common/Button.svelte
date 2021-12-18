@@ -1,11 +1,16 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+
 	export let label: string;
 	export let icon: string;
 	export let type: 'button' | 'submit' | 'reset' = 'button';
-	export let click: () => void = () => {};
+
+	const dispatch = createEventDispatcher();
+
+	const handleClick = () => dispatch('click', {});
 </script>
 
-<button {type} on:click={click}>
+<button {type} on:click={handleClick}>
 	<svg width="24" height="24">
 		<path d={icon} />
 	</svg>
