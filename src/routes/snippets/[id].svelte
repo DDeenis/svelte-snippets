@@ -8,7 +8,7 @@
 	import { goto } from '$app/navigation';
 	import type { Snippet } from '../../query/snippets';
 	import { onMount } from 'svelte';
-	import { syntaxHighlight } from '$lib/helpers/snippets';
+	import Prism from 'prismjs';
 
 	const { id } = $page.params;
 	const snippetQuery = query<GetSnippetResponse, GetSnippetRequest>(GetSnippet, {
@@ -18,15 +18,20 @@
 	});
 
 	let snippet: Snippet | undefined;
-	let prismLangClassName: string;
-	const highlight = syntaxHighlight();
-	const getCondition = () => !$snippetQuery.loading && !$snippetQuery.error;
+	let prismLangClassName: string = `language-${snippet?.Language?.name?.toLowerCase()}`;
 
-	onMount(() => highlight(getCondition));
+	let highlightInterval: NodeJS.Timer;
+	onMount(() => {
+		highlightInterval = setInterval(() => {
+			if ($snippetQuery.data?.getSnippet) {
+				Prism.highlightAll();
+				clearInterval(highlightInterval);
+			}
+		}, 500);
+	});
 
 	$: snippet = $snippetQuery.data?.getSnippet;
 	$: prismLangClassName = `language-${snippet?.Language?.name?.toLowerCase()}`;
-	$: console.log(prismLangClassName);
 </script>
 
 <div class="wrapper">

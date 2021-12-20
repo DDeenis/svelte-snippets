@@ -9,7 +9,6 @@ import type {
 import type { ReadableQuery } from 'svelte-apollo';
 import type { Writable } from 'svelte/store';
 import type { GQLAddSnippetInput } from 'src/graphql.schema';
-import Prism from 'prismjs';
 
 interface PagedSnippetsOptions {
 	first?: number;
@@ -71,18 +70,5 @@ export const createSnippet = () => {
 		});
 
 		return createdSnippet;
-	};
-};
-
-export const syntaxHighlight = () => {
-	let highlightInterval;
-
-	return (condition: () => boolean) => {
-		highlightInterval = setInterval(() => {
-			if (condition()) {
-				Prism.highlightAll();
-				clearInterval(highlightInterval);
-			}
-		}, 500);
 	};
 };
