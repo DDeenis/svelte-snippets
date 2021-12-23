@@ -5,13 +5,18 @@
 <div class="wrapper">
 	<span class="title">Edit your site profile</span>
 	<div class="info-wrapper">
-		<div class="info-entry">
-			<span class="subtile">First name</span>
-			<span class="info">{$user.name}</span>
-		</div>
-		<div class="info-entry">
-			<span class="subtile">Last name</span>
-			<span class="info">{$user.middle_name}</span>
+		<div class="basic-info-wrapper">
+			<img src={$user.picture} alt="avatar" class="avatar" />
+			<div class="basic-info">
+				<div class="info-entry">
+					<span class="subtile">First name</span>
+					<span class="info">{$user.name}</span>
+				</div>
+				<div class="info-entry">
+					<span class="subtile">Last name</span>
+					<span class="info">{$user.middle_name}</span>
+				</div>
+			</div>
 		</div>
 		<div class="info-entry">
 			<span class="subtile">Email ({$user.email_verified ? 'verified' : 'not verified'})</span>
@@ -66,5 +71,24 @@
 
 	.info {
 		font-size: 1rem;
+	}
+
+	.basic-info-wrapper {
+		display: flex;
+		flex-wrap: wrap;
+		gap: min(9rem, 12vw);
+	}
+
+	.basic-info {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		gap: 2rem;
+	}
+
+	.avatar {
+		width: 120px;
+		aspect-ratio: 1 / 1;
+		border-radius: 50%;
 	}
 </style>
