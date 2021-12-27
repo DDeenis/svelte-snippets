@@ -10,6 +10,7 @@
 
 	let isEditing = false;
 	const initialUserData = { ...$user };
+	let formElem;
 
 	const editProfile = () => (isEditing = true);
 	const discardChanges = () => {
@@ -21,6 +22,10 @@
 			firstName: $user.name,
 			lastName: $user.middle_name,
 		});
+	};
+	const dispatchSubmitEvent = () => {
+		const event = new SubmitEvent('submit');
+		formElem.dispatchEvent(event);
 	};
 
 	onMount(() => {
@@ -57,7 +62,7 @@
 			</div>
 		</div>
 	{:else}
-		<div class="info-wrapper">
+		<form class="info-wrapper" bind:this={formElem} on:submit|preventDefault={handleUpdateUser}>
 			<div class="basic-info-wrapper">
 				<img src={$user.picture} alt="avatar" class="avatar" />
 				<div class="basic-info">
@@ -79,15 +84,21 @@
 				<span class="subtile">User id</span>
 				<span class="info">{$user.sub}</span>
 			</div>
-		</div>
+		</form>
 	{/if}
 	<ButtonsGroup>
 		{#if isEditing}
-			<Button label="Submit" icon={mdiCheckCircleOutline} on:click={handleUpdateUser} />
+			<Button
+				label="Submit"
+				type="submit"
+				icon={mdiCheckCircleOutline}
+				on:click={dispatchSubmitEvent}
+			/>
 		{/if}
 		<Button
 			label={isEditing ? 'Cancel' : 'Edit'}
 			icon={isEditing ? mdiCancel : mdiPencil}
+			type="button"
 			on:click={isEditing ? discardChanges : editProfile}
 		/>
 	</ButtonsGroup>
