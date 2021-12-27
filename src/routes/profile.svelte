@@ -1,32 +1,96 @@
 <script>
-	import { user } from '$lib/auth';
+	import { goto } from '$app/navigation';
+
+	import { isAuthenticated, user } from '$lib/auth';
+	import { updateUser } from '$lib/helpers/user';
+	import { mdiCancel, mdiCheckCircleOutline, mdiPencil } from '@mdi/js';
+	import { onMount } from 'svelte';
+	import Button from '../components/Common/Button.svelte';
+	import ButtonsGroup from '../components/Common/ButtonsGroup.svelte';
+
+	let isEditing = false;
+	const initialUserData = { ...$user };
+
+	const editProfile = () => (isEditing = true);
+	const discardChanges = () => {
+		isEditing = false;
+		$user = initialUserData;
+	};
+	const handleUpdateUser = () => {
+		updateUser({
+			firstName: $user.name,
+			lastName: $user.middle_name,
+		});
+	};
+
+	onMount(() => {
+		if (!$isAuthenticated) {
+			goto('/');
+		}
+	});
 </script>
 
 <div class="wrapper">
 	<span class="title">Edit your site profile</span>
-	<div class="info-wrapper">
-		<div class="basic-info-wrapper">
-			<img src={$user.picture} alt="avatar" class="avatar" />
-			<div class="basic-info">
-				<div class="info-entry">
-					<span class="subtile">First name</span>
-					<span class="info">{$user.name}</span>
-				</div>
-				<div class="info-entry">
-					<span class="subtile">Last name</span>
-					<span class="info">{$user.middle_name}</span>
+	{#if !isEditing}
+		<div class="info-wrapper">
+			<div class="basic-info-wrapper">
+				<img src={$user.picture} alt="avatar" class="avatar" />
+				<div class="basic-info">
+					<div class="info-entry">
+						<span class="subtile">First name</span>
+						<span class="info">{$user.name}</span>
+					</div>
+					<div class="info-entry">
+						<span class="subtile">Last name</span>
+						<span class="info">{$user.middle_name}</span>
+					</div>
 				</div>
 			</div>
+			<div class="info-entry">
+				<span class="subtile">Email ({$user.email_verified ? 'verified' : 'not verified'})</span>
+				<span class="info">{$user.email}</span>
+			</div>
+			<div class="info-entry">
+				<span class="subtile">User id</span>
+				<span class="info">{$user.sub}</span>
+			</div>
 		</div>
-		<div class="info-entry">
-			<span class="subtile">Email ({$user.email_verified ? 'verified' : 'not verified'})</span>
-			<span class="info">{$user.email}</span>
+	{:else}
+		<div class="info-wrapper">
+			<div class="basic-info-wrapper">
+				<img src={$user.picture} alt="avatar" class="avatar" />
+				<div class="basic-info">
+					<div class="info-entry">
+						<span class="subtile">First name</span>
+						<input type="text" bind:value={$user.name} />
+					</div>
+					<div class="info-entry">
+						<span class="subtile">Last name</span>
+						<input type="text" bind:value={$user.middle_name} />
+					</div>
+				</div>
+			</div>
+			<div class="info-entry">
+				<span class="subtile">Email ({$user.email_verified ? 'verified' : 'not verified'})</span>
+				<input type="email" bind:value={$user.email} />
+			</div>
+			<div class="info-entry">
+				<span class="subtile">User id</span>
+				<span class="info">{$user.sub}</span>
+			</div>
 		</div>
-		<div class="info-entry">
-			<span class="subtile">User id</span>
-			<span class="info">{$user.sub}</span>
-		</div>
-	</div>
+	{/if}
+	<ButtonsGroup>
+		{#if isEditing}
+			<Button label="Submit" icon={mdiCheckCircleOutline} on:click={handleUpdateUser} />
+		{/if}
+		<Button
+			label={isEditing ? 'Cancel' : 'Edit'}
+			icon={isEditing ? mdiCancel : mdiPencil}
+			on:click={isEditing ? discardChanges : editProfile}
+		/>
+	</ButtonsGroup>
 </div>
 
 <style>
@@ -74,8 +138,8 @@
 	}
 
 	.basic-info-wrapper {
-		display: flex;
-		flex-wrap: wrap;
+		display: grid;
+		grid-template-columns: 120px minmax(max-content, 100%);
 		gap: min(9rem, 12vw);
 	}
 
@@ -88,7 +152,32 @@
 
 	.avatar {
 		width: 120px;
-		aspect-ratio: 1 / 1;
+		height: 120px;
 		border-radius: 50%;
+	}
+
+	input {
+		border: 1.5px solid #975a16;
+		border-radius: 0.25rem;
+		background: transparent;
+		max-width: 250px;
+		width: 100%;
+		box-sizing: border-box;
+		padding: 5px 10px;
+		font-size: 1rem;
+		transition: border-color 0.3s ease-in;
+	}
+
+	input:hover,
+	input:focus {
+		border-color: #22543d;
+		outline: none;
+	}
+
+	@media (max-width: 600px) {
+		.basic-info-wrapper {
+			grid-template-columns: none;
+			grid-auto-flow: row;
+		}
 	}
 </style>

@@ -1,14 +1,16 @@
 import Cookie from 'js-cookie';
-import { CreateUser, GetUser, GetUsers } from '../../query/user';
+import { CreateUser, GetUser, GetUsers, UpdateUser } from '../../query/user';
 import type {
 	GetUserResponse,
 	GetUserRequest,
 	GetUsersResponse,
 	CreateUserResponse,
 	CreateUserRequest,
+	UpdateUserRequest,
+	UpdateUserResponse,
 } from '../../query/user';
 import { mutation, query } from 'svelte-apollo';
-import type { GQLAddUserInput, GQLUserFilter } from 'src/graphql.schema';
+import type { GQLAddUserInput, GQLUserFilter, GQLUserPatch } from 'src/graphql.schema';
 
 export const currentUser = () => {
 	const token = Cookie.get('token') ?? 'ERROR';
@@ -57,4 +59,15 @@ export const createUser = () => {
 			console.log(error);
 		}
 	};
+};
+
+export const updateUser = (user: GQLUserPatch) => {
+	const response = query<UpdateUserResponse, UpdateUserRequest>(UpdateUser, {
+		variables: {
+			id: user.userId,
+			set: user,
+		},
+	});
+
+	return response;
 };
