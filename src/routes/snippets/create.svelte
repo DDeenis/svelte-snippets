@@ -12,6 +12,8 @@
 	import { user } from '$lib/auth';
 	import { snippetSchema } from '$lib/schema/snippets';
 
+	export const prerender = true;
+
 	let name: string;
 	let language = writable<string>('JavaScript');
 	let code = writable<string>('');
